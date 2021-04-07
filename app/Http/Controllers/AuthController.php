@@ -35,7 +35,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Credentials do not match'], 400);
         }
 
-        $user = User::where(['email' => $request->email])->first();
+        $user = User::where(['email' => $request->email])->get()->first();
 
         $token = $user->createToken('authtoken')->plainTextToken;
 
