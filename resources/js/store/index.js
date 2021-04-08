@@ -7,7 +7,9 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         user: {},
-        token: ''
+        token: '',
+        customers: [],
+        items: []
     },
     mutations: {
         setUser(state, user) {
@@ -20,6 +22,18 @@ const store = new Vuex.Store({
         logoutUser(state){
             state.user = {}
             state.token = ''
+        },
+
+        setCustomers(state, customers) {
+            state.customers = customers;
+        } ,
+
+        updateCustomers(state, customer) {
+            state.customers.push(customer)
+        },
+
+        addItem(state, item) {
+            state.items.push(item)
         }
     },
     actions: {
@@ -33,6 +47,18 @@ const store = new Vuex.Store({
 
         logoutUser({commit})  {
             commit('logoutUser');
+        },
+
+        setCustomers({commit}, payload) {
+            commit('setCustomers',payload);
+        },
+
+        updateCustomers({commit}, payload) {
+            commit('updateCustomers', payload)
+        },
+
+        addItem({commit}, payload) {
+            commit('addItem', payload)
         }
     },
     getters: {},

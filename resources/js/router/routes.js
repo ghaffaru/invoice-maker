@@ -15,6 +15,10 @@ const routes = [
     {
         path: '/dashboard',
         component: () => import("../views/dashboard/Home.vue") 
+   },
+   {
+       path: '/create-invoice',
+       component: () => import("../views/dashboard/CreateInvoice.vue")
    }
 ]
 
