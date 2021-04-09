@@ -1,30 +1,19 @@
 <template>
     <div>
     <b-form @submit.prevent="addItem">
-      <b-form-group id="name" label="Item Name">
-        <b-form-input
-          id="name"
-          v-model="name"
-          type="text"
-          placeholder="Item Name"
-        ></b-form-input>
-        <span v-if="nameError" style="color: red">{{
-          nameError
+      
+        <b-form-group id="item" label="Select Item">
+                <b-form-select
+                  v-model="itemId"
+                  :options="this.$store.state.allItems"
+                  required
+                ></b-form-select>
+                <span v-if="itemIdError" style="color: red">{{
+          itemIdError
         }}</span>
-      </b-form-group>
+        </b-form-group>
 
-      <b-form-group id="price" label="Price (GHS)">
-        <b-form-input
-          id="price"
-          v-model="price"
-          type="number"
-          step=".01"
-          placeholder="Price"
-        ></b-form-input>
-        <span v-if="priceError" style="color: red">{{
-          priceError
-        }}</span>
-      </b-form-group>
+        <span>Price: GHS {{ price }}</span>
       <b-form-group id="quantity" label="Quantity">
         <b-form-input
           id="quantity"
@@ -44,42 +33,52 @@
     </div>
 </template>
 
-<script> 
+<script>
 export default {
-    data() {
-        return {
-            name: '',
-            price: '',
-            quantity: '',
+  data() {
+    return {
+      itemId: "",
+      quantity: "",
 
-            nameError: '',
-            priceError: '',
-            quantityError: ''
-        }
+      itemIdError: "",
+      quantityError: "",
+    };
+  },
+  methods: {
+    addItem() {
+      this.itemIdError = this.itemId ? "" : "Item is required";
+      this.quantityError = this.quantity ? "" : "Item quantity is required!";
+
+      if (this.nameError || this.priceError || this.quantityError) return;
+
+      const data = {
+        id: this.itemId,
+        name: this.selectedItem.name,
+        price: this.selectedItem.price,
+        quantity: this.quantity,
+        amount: this.amount,
+      };
+      this.$store.dispatch("addItem", data);
+      
+      this.$bvModal.hide("add-item-modal");
     },
-    methods: {
-        addItem() {
-            this.nameError = this.name ? '' : 'Item name is required';
-            this.priceError = this.price ? '': 'Item price is required';
-            this.quantityError = this.quantity ? '': 'Item quantity is required!'
+  },
 
-            if (this.nameError || this.priceError || this.quantityError) return;
-
-            const data = {
-                name: this.name,
-                price: this.price,
-                quantity: this.quantity,
-                amount: this.amount
-            }
-            this.$store.dispatch('addItem', data);
-            this.$bvModal.hide("add-item-modal");
-        }
+  computed: {
+    amount() {
+      return this.price * this.quantity;
     },
-
-    computed: {
-        amount() {
-            return this.price * this.quantity
+    price() {
+        if (this.itemId) {
+        const item = this.$store.state.allItems.find(item => item.id === this.itemId);
+        return item.price;
+        } else return 0;  
+    },
+    selectedItem() {
+        if (this.itemId) {
+            return this.$store.state.allItems.find(item => item.id === this.itemId);
         }
     }
-}
+  },
+};
 </script>

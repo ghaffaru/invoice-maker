@@ -19,6 +19,10 @@ const routes = [
    {
        path: '/create-invoice',
        component: () => import("../views/dashboard/CreateInvoice.vue")
+   },
+   {
+       path: '/preview-invoice/:id',
+       component: () => import("../views/dashboard/InvoicePreview.vue")
    }
 ]
 

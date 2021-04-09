@@ -25,6 +25,7 @@
     "dependencies": {
         "bootstrap": "^4.6.0",
         "bootstrap-vue": "^2.21.2",
+        "sweetalert": "^2.1.2",
         "vuex-persist": "^3.1.3"
     }
 }
