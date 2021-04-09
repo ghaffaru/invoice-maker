@@ -325,6 +325,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -335,7 +340,8 @@ __webpack_require__.r(__webpack_exports__);
       issueDate: "",
       dueDate: "",
       notes: "",
-      discount: ""
+      discount: "",
+      fields: ["name", "price", "quantity", "amount", "Delete"]
     };
   },
   components: {
@@ -359,7 +365,11 @@ __webpack_require__.r(__webpack_exports__);
       console.log(err.response.data);
     });
   },
-  methods: {},
+  methods: {
+    deleteItem: function deleteItem(item) {
+      this.$store.dispatch('deleteItem', item);
+    }
+  },
   computed: {
     items: function items() {
       return this.$store.state.items;
@@ -1050,8 +1060,30 @@ var render = function() {
                             attrs: {
                               striped: "",
                               hover: "",
-                              items: this.$store.state.items
-                            }
+                              items: this.$store.state.items,
+                              fields: _vm.fields
+                            },
+                            scopedSlots: _vm._u([
+                              {
+                                key: "cell(Delete)",
+                                fn: function(data) {
+                                  return [
+                                    _c(
+                                      "b-button",
+                                      {
+                                        attrs: { variant: "primary" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.deleteItem(data.item)
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Delete")]
+                                    )
+                                  ]
+                                }
+                              }
+                            ])
                           })
                         ],
                         1
@@ -1130,7 +1162,9 @@ var render = function() {
                           "h3",
                           [
                             _vm._v(
-                              "Discount GH¢ " + _vm._s(_vm.discount) + " "
+                              "Discount GH¢ " +
+                                _vm._s((_vm.discount / 100) * _vm.subTotal) +
+                                " "
                             ),
                             _c("b-form-input", {
                               attrs: {

@@ -46,7 +46,12 @@
           <b-row>
             <b-col>
               <br />
-              <b-table striped hover :items="this.$store.state.items"></b-table>
+              <b-table striped hover :items="this.$store.state.items" :fields="fields"
+              >
+              <template #cell(Delete)="data">
+                                <b-button variant="primary" @click="deleteItem(data.item)">Delete</b-button>
+              </template>
+              </b-table>
             </b-col>
           </b-row>
           <b-row>
@@ -74,7 +79,7 @@
             <b-col cols="5"> 
                 <br>
                 <h3>Subtotal  GH¢ {{ subTotal}} </h3>
-                <h3>Discount GH¢ {{ discount }} <b-form-input placeholder="Type discount %" type="number" v-model="discount"></b-form-input></h3>
+                <h3>Discount GH¢ {{ discount / 100 * subTotal }} <b-form-input placeholder="Type discount %" type="number" v-model="discount"></b-form-input></h3>
 
                 <hr>
                 <h3>Amount Due GH¢ {{ amountDue }} </h3>
@@ -116,7 +121,8 @@ export default {
       issueDate: "",
       dueDate: "",
       notes: "",
-      discount: ""
+      discount: "",
+      fields: ["name", "price", "quantity", "amount", "Delete"]
     };
   },
   components: {
@@ -141,7 +147,11 @@ export default {
       });
   },
 
-  methods: {},
+  methods: {
+    deleteItem(item) {
+      this.$store.dispatch('deleteItem', item);
+    }
+  },
   computed: {
     items() {
       return this.$store.state.items;

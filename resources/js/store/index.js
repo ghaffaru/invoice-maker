@@ -22,6 +22,8 @@ const store = new Vuex.Store({
         logoutUser(state){
             state.user = {}
             state.token = ''
+            state.customers = [],
+            state.items = []
         },
 
         setCustomers(state, customers) {
@@ -34,6 +36,12 @@ const store = new Vuex.Store({
 
         addItem(state, item) {
             state.items.push(item)
+        },
+
+        deleteItem(state, customerItem) {
+            state.items = state.items.filter(item => {
+                return item !== customerItem
+            })
         }
     },
     actions: {
@@ -59,6 +67,10 @@ const store = new Vuex.Store({
 
         addItem({commit}, payload) {
             commit('addItem', payload)
+        },
+
+        deleteItem({commit}, payload) {
+            commit('deleteItem', payload)
         }
     },
     getters: {},
