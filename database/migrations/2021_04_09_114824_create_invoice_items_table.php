@@ -17,6 +17,8 @@ class CreateInvoiceItemsTable extends Migration
             $table->id();
             $table->foreignId('invoice_id')->constrained();
             $table->foreignId('item_id')->constrained();
+            $table->integer('quantity');
+            $table->float('amount');
             $table->timestamps();
         });
     }

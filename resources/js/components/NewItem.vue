@@ -25,14 +25,14 @@
           priceError
         }}</span>
       </b-form-group>
-    
+
       <b-button type="submit" variant="primary">Create</b-button>
       <br />
     </b-form>
     </div>
 </template>
 
-<script> 
+<script>
 import axios from 'axios';
 export default {
     data() {
@@ -61,7 +61,7 @@ export default {
                 }
             })
             .then(response => {
-                this.$store.dispatch('addToAllItems', response.data.item)
+                this.$store.dispatch('fetchAllItems');
             })
             .catch(err => {
                 console.log(err)

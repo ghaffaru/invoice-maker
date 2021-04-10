@@ -14,7 +14,7 @@ const routes = [
     },
     {
         path: '/dashboard',
-        component: () => import("../views/dashboard/Home.vue") 
+        component: () => import("../views/dashboard/Home.vue")
    },
    {
        path: '/create-invoice',
@@ -23,6 +23,10 @@ const routes = [
    {
        path: '/preview-invoice/:id',
        component: () => import("../views/dashboard/InvoicePreview.vue")
+   },
+   {
+       path: '/all-invoices',
+       component: () => import("../views/dashboard/Invoices.vue")
    }
 ]
 

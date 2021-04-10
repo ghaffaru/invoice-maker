@@ -39,29 +39,33 @@ class InvoiceController extends Controller
             'issueDate' => 'required',
             'dueDate' => 'required',
             'subTotal' => 'required',
-            'items' => 'required'
+            'items' => 'required|array'
         ]);
-        
-        for ($i=0; $i < count($request->items); $i++)
-        { 
-            $queriedItem = Item::where(['id' => $request->items[$i], 'user_id' => Auth::id()])->get()->first();
-            
+
+        foreach ($request->items as $item)
+        {
+            $item = json_decode(collect($item)[0]);
+
+            $queriedItem = Item::where(['id' => $item->id, 'user_id' => Auth::id()])->get()->first();
+
             if (!$queriedItem)
             {
                 return Response::json(['message' => 'Item not found!'], 404);
             }
         }
-        
 
         DB::beginTransaction();
         try {
             $path = Storage::putFile('/logos', new File($request->organizationLogo));
 
-            $invoice = Invoice::create($request->except('organizationLogo') + ['organizationLogo' => $path]);
+            $invoice = Invoice::create($request->except('organizationLogo') + ['organizationLogo' => $path,
+                                        'user_id' => Auth::id()]);
 
-            for ($i=0; $i < count($request->items); $i++) 
-            { 
-                $invoice->items()->attach(Item::find($request->items[$i]));
+            foreach ($request->items as $item)
+            {
+               $item = json_decode(collect($item)[0]);
+
+               $invoice->items()->attach(Item::find($item->id), ['quantity' => $item->quantity, 'amount' => $item->amount]);
             }
 
             DB::commit();
@@ -70,6 +74,7 @@ class InvoiceController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
+            Storage::delete($request->organizationLogo);
             return Response::json(['message' => $e->getMessage()], 500);
         }
 
