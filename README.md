@@ -42,6 +42,10 @@ DB_PASSWORD=
 ```
 php artisan migrate
 ```
+## Link storage
+```
+php artisan storage:link
+```
 ## Install npm dependencies (For dev purposes)
 ```
 npm install
