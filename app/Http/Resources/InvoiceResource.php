@@ -17,8 +17,8 @@ class InvoiceResource extends JsonResource
         return [
             'id' => $this->id,
             'organizationName' => $this->organizationName,
-            'organizationEmail' => $this->organizationEmail,
-            'organizationLogo' => $this->organizationLogo,
+            'organizationEmail' =>  $this->organizationEmail,
+            'organizationLogo' =>env('APP_URL') . '/storage/' .  $this->organizationLogo,
             'customer' => $this->customer,
             'notes' => $this->notes,
             'dueDate' => $this->dueDate,
@@ -26,7 +26,7 @@ class InvoiceResource extends JsonResource
             'subTotal' => $this->subTotal,
             'discount' => $this->discount,
             'totalAmount' => $this->totalAmount,
-            'items' => $this->items,
+            'items' => InvoiceItemResource::collection($this->items),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

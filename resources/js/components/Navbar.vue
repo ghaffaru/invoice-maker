@@ -14,6 +14,7 @@
                       <b-nav-item to="/login" v-if="!isLoggedIn">Login</b-nav-item>
                       <b-nav-item to="/logout" v-if="isLoggedIn">Logout</b-nav-item>
                       <b-nav-item to="/create-invoice" v-if="isLoggedIn">Create Invoice</b-nav-item>
+                      <b-nav-item to="/all-invoices" v-if="isLoggedIn">All Invoices </b-nav-item>
                       <b-nav-item v-if="isLoggedIn">{{ this.$store.state.user.name }}</b-nav-item>
                     </b-navbar-nav>
                 </b-navbar-nav>

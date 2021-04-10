@@ -216,22 +216,11 @@ export default {
     CreateCustomer,
   },
   mounted() {
-    console.log(this.organizationLogo);
     if (!this.$store.state.token) {
       this.$router.push("/login");
     }
-    axios
-      .get("/api/customer", {
-        headers: {
-          Authorization: `Bearer ${this.$store.state.token}`,
-        },
-      })
-      .then((response) => {
-        this.$store.dispatch("setCustomers", response.data);
-      })
-      .catch((err) => {
-        console.log(err.response.data);
-      });
+    this.$store.dispatch("fetchAllItems");
+    this.$store.dispatch("fetchAllCustomers");
   },
 
   methods: {
@@ -257,10 +246,10 @@ export default {
       invoiceData.append("issueDate", this.issueDate);
       invoiceData.append("dueDate", this.dueDate);
 
-      for (let index = 0; index < this.$store.state.itemIds.length; index++) {
-            invoiceData.append('items[]', this.$store.state.itemIds[index])
+      for (let index = 0; index < this.$store.state.items.length; index++) {
+        invoiceData.append("items[]", JSON.stringify(this.$store.state.items[index]));
       }
-      
+
       invoiceData.append("subTotal", this.subTotal);
       invoiceData.append("notes", this.notes);
       invoiceData.append("discount", this.discount);
@@ -304,4 +293,4 @@ export default {
     },
   },
 };
-</script>   
+</script>
